@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Beyond The Brush - Loading</title>
+    <style>
+        body {
+            background-color: #383232;
+            color: white;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        h1 {
+            font-size: 48px;
+            font-weight: bold;
+            margin-bottom: 50px;
+        }
+        .loading-text {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        .progress-container {
+            width: 400px;
+            height: 30px;
+            background-color: #555;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background-color: #3498db;
+            transition: width 0.1s;
+        }
+        .logo {
+            width: 200px;
+            height: 200px;
+            margin-bottom: 30px;
+        }
+    </style>
+</head>
+<body>
+    <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" class="logo" onerror="this.style.display='none'">
+    <h1>Beyond The Brush</h1>
+    <div class="loading-text">Loading...</div>
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <script>
+        function checkProgress() {
+            fetch('/loading-progress')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('progressBar').style.width = data.progress + '%';
+                    if (data.complete) {
+                        window.location.href = '/entry';
+                    } else {
+                        setTimeout(checkProgress, 300);
+                    }
+                });
+        }
+
+        // Start checking progress
+        checkProgress();
+    </script>
+</body>
+</html>

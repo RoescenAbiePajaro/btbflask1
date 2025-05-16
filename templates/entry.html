@@ -1,0 +1,116 @@
+<!--entry.html-->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Beyond The Brush - Entry</title>
+    <style>
+        body {
+            background-color: #383232;
+            color: white;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        h1 {
+            font-size: 48px;
+            font-weight: bold;
+            margin-bottom: 50px;
+        }
+        .logo {
+            width: 200px;
+            height: 200px;
+            margin-bottom: 30px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        label {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        input[type="text"], input[type="password"] {
+            font-size: 18px;
+            padding: 10px;
+            width: 400px;
+            border-radius: 5px;
+            border: none;
+        }
+        .radio-group {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        .radio-option {
+            display: flex;
+            align-items: center;
+            font-size: 18px;
+        }
+        .radio-option input {
+            margin-right: 8px;
+        }
+        button {
+            font-size: 18px;
+            padding: 10px 30px;
+            background-color: #ff00ff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        button:hover {
+            background-color: #cc00cc;
+        }
+        .error {
+            color: #ff5555;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" class="logo" onerror="this.style.display='none'">
+    <h1>Beyond The Brush</h1>
+
+    <form action="/verify" method="post">
+        <div class="radio-group">
+            <div class="radio-option">
+                <input type="radio" id="student" name="role" value="student" checked>
+                <label for="student">Student</label>
+            </div>
+            <div class="radio-option">
+                <input type="radio" id="educator" name="role" value="educator">
+                <label for="educator">Educator</label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="code">Enter Access Code:</label>
+            <input type="password" id="code" name="code" required>
+        </div>
+
+        <div class="form-group">
+            <button type="submit">ENTER</button>
+        </div>
+    </form>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="error">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <script>
+        document.getElementById('code').focus();
+    </script>
+</body>
+</html>
