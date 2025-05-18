@@ -1,5 +1,6 @@
 # VirtualPainter.py
 # from flask import Flask, render_template, Response, request, jsonify
+import base64
 from flask import Blueprint, render_template, Response, request, jsonify
 import cv2
 import numpy as np
@@ -413,6 +414,19 @@ def index():
 @painter_bp.route('/video_feed')
 def video_feed():
     return Response(generate_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
+
+@painter_bp.route("/upload_frame", methods=["POST"])
+def upload_frame():
+    data = request.get_json()
+    img_data = data['image'].split(',')[1]  # Remove "data:image/jpeg;base64,"
+    img_bytes = base64.b64decode(img_data)
+    np_arr = np.frombuffer(img_bytes, np.uint8)
+    frame = cv2.imdecode(np_arr, cv2.IMREAD_COLOR)
+
+    # Do your processing here (e.g., hand tracking)
+    print("Received frame", frame.shape)
+
+    return '', 204
 
 @painter_bp.route('/keypress', methods=['POST'])
 def handle_keypress():
