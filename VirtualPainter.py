@@ -48,7 +48,9 @@ swipe_active = False  # To track if swipe is in progress
 drawColor = (255, 0, 255)
 
 # Set up the camera
-
+cap = cv2.VideoCapture(0)
+cap.set(3, 1280)  # Width
+cap.set(4, 720)  # Height
 
 # Assigning Detector
 detector = htm.handDetector(detectionCon=0.85)
@@ -137,15 +139,6 @@ def generate_frames():
 
     while True:
         start_time = time.time()
-
-        yield (b'--frame\r\n'
-               b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
-
-        elapsed_time = time.time() - start_time
-        if elapsed_time < time_per_frame:
-            time.sleep(time_per_frame - elapsed_time)
-
-        cap.release()
 
         # 1. Import Image
         success, img = cap.read()
@@ -413,6 +406,7 @@ def generate_frames():
         if elapsed_time < time_per_frame:
             time.sleep(time_per_frame - elapsed_time)
 
+        cap.release()
 
 @painter_bp.route('/')
 def index():
