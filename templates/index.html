@@ -72,6 +72,21 @@
 <!--    <div id="save-notification"></div>-->
 
    <!-- In your template/index.html -->
+
+<script>
+  // Live camera access using getUserMedia
+  const video = document.getElementById('video-feed');
+
+  navigator.mediaDevices.getUserMedia({ video: true })
+    .then(stream => {
+      video.srcObject = stream;
+    })
+    .catch(err => {
+      console.error("Camera access error:", err);
+      alert("Unable to access the camera.");
+    });
+</script>
+
 <script>
 document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') {
