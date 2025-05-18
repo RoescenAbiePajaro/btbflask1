@@ -66,10 +66,8 @@ class handDetector:
 
 def main():
     pTime = 0
-    cap = cv2.VideoCapture(1, cv2.CAP_ANY)  # Use default camera
+    cap = cv2.VideoCapture(0)  # Use default camera
     detector = handDetector()
-
-
 
     while True:
         success, img = cap.read()

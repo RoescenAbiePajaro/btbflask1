@@ -62,11 +62,9 @@
         }
     </style>
 </head>
+
+<div><img id="video-feed" src="{{ url_for('painter.video_feed') }}" alt="Live video feed"></div>
 <body>
-<div id="video-container">
-        <!-- Replaced server-based image stream with client-side webcam video -->
-        <video id="video-feed" autoplay playsinline muted></video>
-    </div>
 
 <!--    <div id="controls">-->
 <!--        <button id="save-btn">Save Canvas</button>-->
@@ -106,18 +104,5 @@ document.addEventListener('keydown', function(e) {
     e.preventDefault();
 });
 </script>
-
- <script>
-    const video = document.getElementById('video-feed');
-
-    navigator.mediaDevices.getUserMedia({ video: true, audio: false })
-        .then(stream => {
-            video.srcObject = stream;
-        })
-        .catch(error => {
-            console.error('Error accessing webcam:', error);
-            alert('Cannot access webcam. Please allow camera access.');
-        });
-    </script>
 </body>
 </html>
