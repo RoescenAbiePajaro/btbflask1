@@ -48,7 +48,7 @@ swipe_active = False  # To track if swipe is in progress
 drawColor = (255, 0, 255)
 
 # Set up the camera
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(1)
 cap.set(3, 1280)  # Width
 cap.set(4, 720)  # Height
 
