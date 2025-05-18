@@ -48,7 +48,7 @@ swipe_active = False  # To track if swipe is in progress
 drawColor = (255, 0, 255)
 
 # Set up the camera
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(1)
 cap.set(3, 1280)  # Width
 cap.set(4, 720)  # Height
 
@@ -133,9 +133,7 @@ def interpolate_points(x1, y1, x2, y2, num_points=10):
 
 def generate_frames():
     global xp, yp, swipe_start_x, swipe_active, last_time, header, current_guide_index, current_guide, show_guide, drawColor, undoStack, redoStack, brushSize, eraserSize
-    cap = cv2.VideoCapture(0)
-    cap.set(3, 1280)  # Width
-    cap.set(4, 720)  # Height
+
 
     while True:
         start_time = time.time()
@@ -406,7 +404,6 @@ def generate_frames():
         if elapsed_time < time_per_frame:
             time.sleep(time_per_frame - elapsed_time)
 
-        cap.release()
 
 @painter_bp.route('/')
 def index():
