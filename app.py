@@ -1,9 +1,15 @@
+# app.py
 from flask import Flask, render_template, request, redirect, url_for, flash, session, jsonify
 import os
 import subprocess  # Add this import for running external scripts
+from VirtualPainter import painter_bp
+
+
 
 app = Flask(__name__)
-app.secret_key = 'your_secret_key_here'  # Change this for production!
+app.secret_key = 'your_secret_key_here'
+app.register_blueprint(painter_bp, url_prefix='/painter')
+# app.secret_key = 'your_secret_key_here'  # Change this for production!
 
 # Configuration
 CORRECT_CODE = "12345"
@@ -69,7 +75,6 @@ def verify_code():
         flash('Incorrect access code. Please try again.', 'error')
         return redirect(url_for('entry_page'))
 
-
 @app.route('/index')
 def launch_page():
     """Render launch.html after successful authentication."""
@@ -77,12 +82,11 @@ def launch_page():
         return redirect(url_for('entry_page'))
 
     role = session.get('role', 'student')
-    return render_template('index.html', role=role)
+    return render_template('index.html', role=role, video_feed_url="http://localhost:5000/video_feed")
 
 
 if __name__ == '__main__':
     # Ensure upload directory exists
     os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
-
     # Start Flask development server
     app.run(debug=True)

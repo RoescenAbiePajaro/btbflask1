@@ -1,5 +1,6 @@
 # VirtualPainter.py
-from flask import Flask, render_template, Response, request, jsonify
+# from flask import Flask, render_template, Response, request, jsonify
+from flask import Blueprint, render_template, Response, request, jsonify
 import cv2
 import numpy as np
 import os
@@ -7,7 +8,8 @@ import time
 import HandTrackingModule as htm
 from KeyboardInput import KeyboardInput
 
-app = Flask(__name__)
+# app = Flask(__name__)
+painter_bp = Blueprint('painter', __name__)
 
 # Variables
 brushSize = 10
@@ -131,6 +133,7 @@ def interpolate_points(x1, y1, x2, y2, num_points=10):
 
 def generate_frames():
     global xp, yp, swipe_start_x, swipe_active, last_time, header, current_guide_index, current_guide, show_guide, drawColor, undoStack, redoStack, brushSize, eraserSize
+
 
     while True:
         start_time = time.time()
@@ -402,26 +405,26 @@ def generate_frames():
             time.sleep(time_per_frame - elapsed_time)
 
 
-@app.route('/')
+@painter_bp.route('/')
 def index():
     return render_template('index.html')
 
 
-@app.route('/video_feed')
+@painter_bp.route('/video_feed')
 def video_feed():
     return Response(generate_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
-@app.route('/keypress', methods=['POST'])
+@painter_bp.route('/keypress', methods=['POST'])
 def handle_keypress():
     data = request.get_json()
     key = data['key']
     keyboard_input.process_key_input(key)
     return jsonify({'status': 'success'})
 
-@app.route('/save', methods=['POST'])
+@painter_bp.route('/save', methods=['POST'])
 def save_image():
     save_path = save_canvas()
     return jsonify({'status': 'success', 'path': save_path})
 
-if __name__ == '__main__':
-    app.run(debug=True)
+# if __name__ == '__main__':
+#     app.run(debug=True)

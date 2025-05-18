@@ -1,10 +1,12 @@
 <!--index.html-->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Virtual Painter</title>
+
     <style>
         body {
             margin: 0;
@@ -60,12 +62,9 @@
         }
     </style>
 </head>
-<body>
-    <h1>Virtual Painter</h1>
-    <div id="video-container">
-        <img id="verify-code" src="{{ url_for('verify_code') }}">
-    </div>
 
+<div><img id="video-feed" src="{{ url_for('painter.video_feed') }}" alt="Live video feed"></div>
+<body>
 
 <!--    <div id="controls">-->
 <!--        <button id="save-btn">Save Canvas</button>-->
@@ -77,26 +76,26 @@
 document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') {
         // Send escape key to server
-        fetch('/keypress', {
+        fetch('/painter/keypress', {  // Added /painter prefix
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({key: 27})  // 27 is ESC keycode
         });
     } else if (e.key === 'Enter') {
-        fetch('/keypress', {
+        fetch('/painter/keypress', {  // Added /painter prefix
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({key: 13})  // 13 is Enter
         });
     } else if (e.key === 'Backspace') {
-        fetch('/keypress', {
+        fetch('/painter/keypress', {  // Added /painter prefix
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({key: 8})  // 8 is Backspace
         });
     } else if (e.key.length === 1) {
         // Regular character
-        fetch('/keypress', {
+        fetch('/painter/keypress', {  // Added /painter prefix
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({key: e.key.charCodeAt(0)})
@@ -105,6 +104,5 @@ document.addEventListener('keydown', function(e) {
     e.preventDefault();
 });
 </script>
-    </script>
 </body>
 </html>
